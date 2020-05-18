@@ -6,3 +6,5 @@ Glass.PublishViewer.v2.ncrunchsolution
 Glass.PublishViewer/bin/
 Glass.PublishViewer/obj/
 Libs/Sitecore/*.dll
+/.vs
+/packages/Sitecore.Kernel.9.3.0

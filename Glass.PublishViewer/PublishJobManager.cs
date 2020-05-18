@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Sitecore;
+using Sitecore.Abstractions;
 using Sitecore.Data.Items;
 using Sitecore.Jobs;
 using Sitecore.Publishing;
@@ -70,10 +71,10 @@ namespace Glass.PublishViewer
                             BindingFlags.Static |
                             BindingFlags.NonPublic);
 
-            JobOptionMethodInstanceField = typeof(JobOptions).GetField("method", BindingFlags.NonPublic|BindingFlags.Instance);
+            JobOptionMethodInstanceField = typeof(DefaultJobOptions).GetField("method", BindingFlags.NonPublic|BindingFlags.Instance);
 ;        }
 
-        protected virtual IEnumerable<Job> GetJobs()
+        protected virtual IEnumerable<BaseJob> GetJobs()
         {
             return JobManager.GetJobs()
                 .Where(x => x.Name.ToLower().Equals("publish"))
@@ -84,7 +85,7 @@ namespace Glass.PublishViewer
 
         protected virtual void JobRefresh()
         {
-            IEnumerable<Job> jobs = GetJobs();
+            IEnumerable<BaseJob> jobs = GetJobs();
 
             var handles = _jobEntities.Keys.ToList();
 
@@ -201,7 +202,7 @@ namespace Glass.PublishViewer
             return currentTotal/(currentCount + increment);
         }
 
-        protected JobEntity MapJobEntity(Job job, JobEntity jobDetail)
+        protected JobEntity MapJobEntity(BaseJob job, JobEntity jobDetail)
         {
 
             PublishOptions[] publishOptions = (Sitecore.Publishing.PublishOptions[]) (job.Options.Parameters[0]);
